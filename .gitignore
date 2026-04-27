@@ -1,0 +1,65 @@
+# =========================
+# SISTEMA OPERATIVO
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# EDITORES / IDEs
+# =========================
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+
+# =========================
+# LOGS
+# =========================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# DEPENDENCIAS (si algún día usas npm)
+# =========================
+node_modules/
+
+# =========================
+# ARCHIVOS TEMPORALES
+# =========================
+*.tmp
+*.temp
+*.swp
+
+# =========================
+# VARIABLES DE ENTORNO
+# =========================
+.env
+.env.local
+.env.*.local
+
+# =========================
+# BUILD / DIST (por si después compilas)
+# =========================
+dist/
+build/
+
+# =========================
+# ARCHIVOS PESADOS (OPCIONAL)
+# =========================
+*.zip
+*.rar
+*.7z
+
+# =========================
+# BASES LOCALES / DATOS
+# =========================
+*.sqlite
+*.db
+
+# =========================
+# BACKUPS
+# =========================
+*.bak
