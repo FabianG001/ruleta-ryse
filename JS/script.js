@@ -2,7 +2,7 @@
 let historialGanadores = JSON.parse(localStorage.getItem("historialGanadores")) || [];
 
 const logo = new Image();
-logo.src = "../assets/logo-ryse.png";
+logo.src = "assets/img/logo-ryse.png";
 
 let logoCargado = false;
 
@@ -12,8 +12,8 @@ logo.onload = () => {
 };
 
 //SONIDO PARA EL GIRO
-const sonidoGiro = new Audio("../assets/giro.mp3");
-const sonidoConfeti = new Audio("../assets/confeti.mp3");
+const sonidoGiro = new Audio("assets/audio/giro.mp3");
+const sonidoConfeti = new Audio("assets/audio/confeti.mp3");
 
 sonidoGiro.preload = "auto";
 sonidoConfeti.preload = "auto";
