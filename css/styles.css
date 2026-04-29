@@ -23,6 +23,7 @@ body {
     height: 80%;
 
 }
+
 /*
 .historial-wrapper {
     width: 650px;
@@ -47,13 +48,14 @@ body {
 }
 */
 .creditos {
-    width: 200px;
     font-size: 13px;
     color: #555;
     opacity: 0.7;
-    float: right;
-
-
+    position: fixed;
+    bottom: 0;
+    /*left: 0;*/
+    margin-bottom: 50px;
+    width: 100%; /* Para que ocupe todo el ancho */
 }
 
 canvas {
@@ -69,7 +71,7 @@ button {
 }
 
 #ganador {
-    margin-top: 25px;
+    margin-top: 50px;
     font-size: 22px;
     color: #1e7f34;
     font-weight: bold;
