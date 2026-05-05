@@ -12,22 +12,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $(".slider").bxSlider();
-        });
-    </script>
 </head>
 
 <body>
+    <div class="slider-wrapper">
+        <ul class="slider">
+            <li><img src="assets/img/slider1.jpg" alt="Image1"></li>
+            <li><img src="assets/img/slider2.jpg" alt="Image2"></li>
+            <li><img src="assets/img/slider3.jpg" alt="Imagen3"></li>
+        </ul>
+    </div>
     <div class="container">
-
-        <div class="slider">
-            <div><img src="assets/img/Image1.jpg" alt="Imagen 1"></div>
-            <div><img src="assets/img/Image2.jpg" alt="Imagen 2"></div>
-            <div><img src="assets/img/Image3.jpg" alt="Imagen 3"></div>
-        </div>
-
         <div class="ruleta-wrapper">
             <h1 class="titulo">🎁 Ruleta RYSE 2026 🎁</h1>
             <canvas id="canvas" width="500" height="500"></canvas>
@@ -50,7 +45,21 @@
 
     </div>
 
-
+    <!--Script Slider-->
+    <script>
+        $(document).ready(function () {
+            $('.slider').bxSlider({
+                mode: 'fade',
+                auto: true,
+                pause: 3000,
+                speed: 1000,
+                autoHover: true,
+                controls: false,
+                minSlides: 3,
+                maxSlides: 3
+            });
+        });
+    </script>
 
     <script src="JS/script.js"></script>
 </body>
