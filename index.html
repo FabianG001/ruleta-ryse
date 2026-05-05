@@ -16,7 +16,7 @@
 
 <body>
 
-     <h3 id="welcome">¡Premios Ryse 2027!</h3>
+    <!--<h3 id="welcome">¡Premios Ryse 2027!</h3>-->
 
     <!-- Slider -->
     <div class="slider-wrapper">
@@ -27,27 +27,21 @@
         </ul>
     </div>
 
-    <!-- Contenedor principal -->
-    <div class="container">
-        <div class="ruleta-wrapper">
-
-            <canvas id="canvas" width="500" height="500"></canvas>
-
-            <button class="btn-ruleta" onclick="girar()">Girar Ruleta</button>
-            <button class="btn-ruleta" onclick="pantallaCompleta()">Pantalla Completa</button>
-            <h1 id="ganador"></h1>
+    <div class="ruleta-container">
+        <div class="visor">
+            <div id="listaParticipantes"></div>
         </div>
-        <!--<div class="historial-wrapper">
-            <h1>Historial de ganadores</h1>
-            <ul id="historial"></ul>
-            <button class="btn-limpiar" onclick="limpiarHistorial()">Limpiar historial</button>
-        </div>-->
+    </div>
 
-        <!-- Créditos -->
-        <footer class="creditos">
-            <strong><em>Fabián González - Soporte TI</em></strong><br>
-            <strong><em>Ryse 2026</em></strong>
-        </footer>
+    <div class="controls">
+        <button onclick="girar()">Girar Ruleta</button>
+    </div>
+
+    <!-- Créditos -->
+    <footer class="creditos">
+        <strong><em>Fabián González - Soporte TI</em></strong><br>
+        <strong><em>Ryse 2026</em></strong>
+    </footer>
 
     </div>
 
