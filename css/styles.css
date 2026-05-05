@@ -27,8 +27,8 @@ body {
 }
 
 .visor {
-    width: 300px;
-    height: 150px;
+    width: 450px;
+    height: 225px;
     overflow: hidden;
     border: 4px solid #8b5e3c;
     border-radius: 12px;
@@ -37,20 +37,39 @@ body {
     position: relative;
 }
 
-#listaParticipantes {
+.visor::before,
+.visor::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    z-index: 2;
+}
+
+.visor::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent);
+}
+
+.visor::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
+}
+
+#listaColaboradores {
     display: flex;
     flex-direction: column;
-    transition: transform 3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .participante {
-    height: 150px;
+    height: 225px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 22px;
     font-weight: bold;
-    border-bottom: 1px solid #ddd;
     background: white;
 }
 
@@ -71,11 +90,24 @@ button {
     cursor: pointer;
 }
 
+
 #ganador {
-    margin-top: 50px;
-    font-size: 22px;
+    /*background: gold !important;*/
     color: #1e7f34;
-    font-weight: bold;
+    transform: scale(1.05);
+   /* box-shadow: 0 0 15px gold;*/
+}
+
+
+.ya-ganador {
+    opacity: 0.4;
+    background: #ddd;
+}
+
+.ganador {
+    background: gold !important;
+    color: black;
+    transform: scale(1.05);
 }
 
 /* ADAPTACIÓN A DISPOSITIVOS MOVILES */

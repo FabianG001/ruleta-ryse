@@ -5,31 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruleta RYSE 2026</title>
+
     <link rel="icon" type="image/png" href="assets/img/logo-ryse.png">
     <link rel="stylesheet" href="css/styles.css">
+
     <!-- Slider -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
-
 </head>
 
 <body>
 
-    <!--<h3 id="welcome">¡Premios Ryse 2027!</h3>-->
-
-    <!-- Slider -->
     <div class="slider-wrapper">
         <ul class="slider">
-            <li><img src="assets/img/slider1.jpg" alt="Image1"></li>
-            <li><img src="assets/img/slider2.jpg" alt="Image2"></li>
-            <li><img src="assets/img/slider3.jpg" alt="Imagen3"></li>
+            <li><img src="assets/img/slider1.jpg"></li>
+            <li><img src="assets/img/slider2.jpg"></li>
+            <li><img src="assets/img/slider3.jpg"></li>
         </ul>
     </div>
 
     <div class="ruleta-container">
         <div class="visor">
-            <div id="listaParticipantes"></div>
+            <div id="listaColaboradores"></div>
         </div>
     </div>
 
@@ -37,15 +35,13 @@
         <button onclick="girar()">Girar Ruleta</button>
     </div>
 
-    <!-- Créditos -->
+    <h1 id="ganador"></h1>
+    
     <footer class="creditos">
         <strong><em>Fabián González - Soporte TI</em></strong><br>
         <strong><em>Ryse 2026</em></strong>
     </footer>
 
-    </div>
-
-    <!--Script Slider-->
     <script>
         $(document).ready(function () {
             $('.slider').bxSlider({
@@ -53,10 +49,7 @@
                 auto: true,
                 pause: 3000,
                 speed: 1000,
-                autoHover: true,
-                controls: false,
-                minSlides: 3,
-                maxSlides: 3
+                controls: false
             });
         });
     </script>
