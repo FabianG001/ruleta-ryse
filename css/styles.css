@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-/*@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@400;500;600&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     margin: 0;
@@ -12,28 +11,64 @@ body {
     /*font-family: 'Playfair Display', serif;*/
     background: #dadadb;
     text-align: center;
-    margin: auto;
+    /*margin: 0;*/
 }
 
 .slider-wrapper {
-    max-width: 700px;
-    margin: 20px auto;
+    max-width: 800px;
+    margin: 5px auto;
+}
+
+.main-container {
+    display: flex;
+    /* Esto pone los hijos uno al lado del otro */
+    width: 100%;
+    height: 50vh;
+
 }
 
 .ruleta-container {
     display: flex;
-    justify-content: center;
-    margin-top: 40px;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Alinea los elementos verticalmente */
+    justify-content: space-between;
+    /* Distribuye espacio uniforme entre elementos */
+    /*height: 56vh;*/
+    /* Opcional: define una altura (ej. el 100% de la ventana) */
+    width: 50vw;
+    /* Ocupa la mitad del ancho de la pantalla */
+
+
+}
+
+.ruleta-container p {
+    font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 300px -50px 0;
+    color: #333;
+}
+
+.ruleta-container .visor {
+    margin: 0 auto;
+}
+    
+
+.ruleta-container h1 {
+    font-size: 25px;
+    margin: 0 10px;
 }
 
 .visor {
     width: 450px;
     height: 225px;
     overflow: hidden;
-    border: 4px solid #8b5e3c;
+    /*border: 4px solid #8b5e3c;*/
+    border: 4px solid #0d6efd;
     border-radius: 12px;
     background: #fdf6e3;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     position: relative;
 }
 
@@ -49,12 +84,14 @@ body {
 
 .visor::before {
     top: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent);
+    /*background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);*/
+    background: linear-gradient(to bottom, rgba(13, 110, 253, 0.2), transparent);
 }
 
 .visor::after {
     bottom: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
+    /*background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);*/
+    background: linear-gradient(to top, rgba(13, 110, 253, 0.2), transparent);
 }
 
 #listaColaboradores {
@@ -73,29 +110,23 @@ body {
     background: white;
 }
 
-.creditos {
-    font-size: 13px;
-    color: #555;
-    opacity: 0.7;
-    width: 100%; /* Para que ocupe todo el ancho */
-}
-
 button {
     padding: 12px 20px;
     margin: 10px;
     border: none;
     border-radius: 8px;
-    background: #0d6efd;
+    background: #F4320B;
     color: white;
     cursor: pointer;
 }
 
 
 #ganador {
-    /*background: gold !important;*/
-    color: #1e7f34;
-    transform: scale(1.05);
-   /* box-shadow: 0 0 15px gold;*/
+    background: gold !important;
+    /* color: #1e7f34;*/
+    color: #0d6efd;
+    transform: scale(1);
+    /* box-shadow: 0 0 15px gold;*/
 }
 
 
@@ -106,8 +137,61 @@ button {
 
 .ganador {
     background: gold !important;
+    /*background: rgb(157, 231, 250) !important;*/
     color: black;
-    transform: scale(1.05);
+    transform: scale(1);
+}
+
+.historial-container {
+    /*flex: 1;*/
+    width: 50vw;
+    margin: 0 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 4px solid #0d6efd;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.historial-container h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    background: #0d6efd;
+    color: white;
+}
+
+#listaGanadores {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#listaGanadores li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
+}
+
+.creditos {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    /* Ajusta a tu gusto */
+    font-size: 15px;
+    opacity: 0.7;
+    background-color: #333;
+    /*margin: 5px 0 0 0;*/
+}
+
+.creditos p {
+    font-weight: bold;
+    margin: 3px 0 0 0;
+    padding: 5px 0;
+    line-height: 0.6;
+    color: #bdbbbb;
+
 }
 
 /* ADAPTACIÓN A DISPOSITIVOS MOVILES */

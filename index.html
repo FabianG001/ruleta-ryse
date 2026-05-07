@@ -17,34 +17,45 @@
 
 <body>
 
-    <div class="slider-wrapper">
-        <ul class="slider">
-            <li><img src="assets/img/slider1.jpg"></li>
-            <li><img src="assets/img/slider2.jpg"></li>
-            <li><img src="assets/img/slider3.jpg"></li>
-        </ul>
-    </div>
+    <header id="slider">
+        <div class="slider-wrapper">
+            <ul class="bxslider">
+                <li><img src="assets/img/slider1.jpg"></li>
+                <li><img src="assets/img/slider2.jpg"></li>
+                <li><img src="assets/img/slider3.jpg"></li>
+            </ul>
+        </div>
+    </header>
 
-    <div class="ruleta-container">
-        <div class="visor">
-            <div id="listaColaboradores"></div>
+    <div class="main-container">
+        <div class="ruleta-container">
+            <p>Participantes:</p>
+            <div class="visor">
+                <div id="listaColaboradores"></div>
+            </div>
+
+            <div class="controls">
+                <button onclick="girar()">Girar Ruleta</button>
+            </div>
+
+            <h1 id="ganador"></h1>
+        </div>
+
+        <div class="historial-container">
+            <h3>🏆 Historial de Ganadores</h3>
+            <ul id="listaGanadores"></ul>
         </div>
     </div>
 
-    <div class="controls">
-        <button onclick="girar()">Girar Ruleta</button>
-    </div>
 
-    <h1 id="ganador"></h1>
-    
     <footer class="creditos">
-        <strong><em>Fabián González - Soporte TI</em></strong><br>
-        <strong><em>Ryse 2026</em></strong>
+        <p>&copy; Fabián González - Soporte TI</p>
+        <p>Ryse 2027</p>
     </footer>
 
     <script>
         $(document).ready(function () {
-            $('.slider').bxSlider({
+            $('.bxslider').bxSlider({
                 mode: 'fade',
                 auto: true,
                 pause: 3000,
