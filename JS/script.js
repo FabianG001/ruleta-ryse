@@ -312,7 +312,7 @@ function renderLista() {
 
     // quitar de la ruleta visual a los que ya ganaron
     const visibles = colaboradores.filter(
-        c => !ganadores.includes(c.nombre)
+        c => !ganadores.some(g => g.nombre === c.nombre)
     );
 
     // repetir para efecto scroll
@@ -346,6 +346,16 @@ renderLista();
 // ==========================
 function girar() {
 
+    //Validar input de premio vacío
+    const premioInput = document.getElementById("premioInput");
+    const premio = premioInput.value.trim();
+
+    if (premio === "") {
+        alert("Debes escribir el premio antes de girar la ruleta.");
+        premioInput.focus();
+        return;
+    }
+
     // elegibles que no han ganado
     const disponibles = elegibles.filter(p => !ganadores.includes(p.nombre));
 
@@ -359,7 +369,7 @@ function girar() {
     const ganador = disponibles[ganadorIndex];
 
     const visibles = colaboradores.filter(
-        c => !ganadores.includes(c.nombre)
+        c => !ganadores.some(g => g.nombre === c.nombre)
     );
 
     const indexEnLista = visibles.findIndex(
@@ -438,7 +448,12 @@ function girar() {
         // esperar unos segundos mostrando gold
         setTimeout(() => {
 
-            ganadores.push(ganador.nombre);
+            const premio = document.getElementById("premioInput").value.trim();
+
+            ganadores.push({
+                nombre: ganador.nombre,
+                premio: premio || "Sin premio definido"
+            });
 
             renderLista();
             renderHistorial();
@@ -447,36 +462,48 @@ function girar() {
 
     }, 4000);
 
-// animación de giro del icono
-/*
-    const boton = document.getElementById('btn-girar');
-    const icono = document.getElementById('icono-ruleta');
-
-    boton.addEventListener('click', () => {
-        // 1. Activa la animación del icono
-        icono.classList.add('girando');
-        boton.disabled = true; // Desactiva el botón durante el juego
-
-        // 2. Simula el tiempo que tarda la ruleta en detenerse (ej: 4 segundos)
-        setTimeout(() => {
-            // 3. Detiene la animación
-            icono.classList.remove('girando');
-            boton.disabled = false;
-
-            // Aquí agregas tu lógica para mostrar al ganador
-            alert("¡Tenemos un ganador!");
-        }, 4000);
-    });
-    */
+    // animación de giro del icono
+    /*
+        const boton = document.getElementById('btn-girar');
+        const icono = document.getElementById('icono-ruleta');
+    
+        boton.addEventListener('click', () => {
+            // 1. Activa la animación del icono
+            icono.classList.add('girando');
+            boton.disabled = true; // Desactiva el botón durante el juego
+    
+            // 2. Simula el tiempo que tarda la ruleta en detenerse (ej: 4 segundos)
+            setTimeout(() => {
+                // 3. Detiene la animación
+                icono.classList.remove('girando');
+                boton.disabled = false;
+    
+                // Aquí agregas tu lógica para mostrar al ganador
+                alert("¡Tenemos un ganador!");
+            }, 4000);
+        });
+        */
 }
 
-//Función para renderizar el historial de ganadores
+//Función para renderizar el historial de ganadores y premios
 function renderHistorial() {
+
     listaGanadoresHTML.innerHTML = "";
 
-    ganadores.forEach((nombre, index) => {
+    ganadores.forEach((g, index) => {
+
         const li = document.createElement("li");
-        li.textContent = `${index + 1}. ${nombre}`;
+
+        li.innerHTML = `
+            <span class="ganador-nombre">
+                ${index + 1}. ${g.nombre}
+            </span>
+
+            <span class="ganador-premio">
+                🎁 ${g.premio}
+            </span>
+        `;
+
         listaGanadoresHTML.appendChild(li);
     });
 }

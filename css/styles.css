@@ -43,20 +43,32 @@ body {
     font-family: 'DM Sans', Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: bold;
-    /*margin: 0 300px -50px 0;*/
-    margin: 0 auto;
-    width: 450px;
     color: #333;
-    text-align: left;
+    margin-top: 2.5%;
 }
 
 .ruleta-container p i {
     margin-right: 10px;
 }
 
+.ruleta-container .users-container {
+    display: flex;
+    margin-left: 25%;
+    gap: 8px;
+}
+
+.ruleta-container .users-container #premioInput {
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    padding: 12px;
+    width: 40%;
+    border: 2px solid #0d6efd;
+    border-radius: 8px;
+}
+
 .ruleta-container .visor {
     margin: 0 auto;
-    margin-top: -15px;
+    margin-top: 5px;
 }
 
 .ruleta-container h1 {
@@ -203,10 +215,35 @@ button:hover {
     overflow-y: auto;
 }
 
+/*
 #listaGanadores li {
     padding: 8px;
     border-bottom: 1px solid #eee;
     font-weight: 500;
+}
+    */
+
+#listaGanadores li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+
+    font-weight: 500;
+    gap: 15px;
+}
+
+.ganador-nombre {
+    text-align: left;
+    flex: 1;
+}
+
+.ganador-premio {
+    color: #000;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
 .btnHistorial {
