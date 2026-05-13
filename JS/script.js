@@ -187,7 +187,7 @@ const colaboradores = [
     { nombre: "MIRELES VAZQUEZ SISSI", ingreso: "2025-12-30" },
     { nombre: "LOPEZ ZAMORA ANGEL JOSUE", ingreso: "2023-06-19" },
     { nombre: "JUAREZ MANCERA BERNARDO", ingreso: "2023-06-26" },
-    { nombre: "MENDEZ MARCELO OSCAR", ingreso: "2025-12-2025" },
+    { nombre: "MENDEZ MARCELO OSCAR", ingreso: "2025-12-25" },
     { nombre: "VAZQUEZ MARES MARIA FERNANDA", ingreso: "2025-12-30" },
     { nombre: "ARAUJO AVIÑA JORGE ANDRES", ingreso: "2025-12-30" },
     { nombre: "VELAZQUEZ TORRES NORMA JUDITH", ingreso: "2023-09-16" },
@@ -307,28 +307,36 @@ const lista = document.getElementById("listaColaboradores");
 // RENDER (TODOS)
 // ==========================
 function renderLista() {
+
     lista.innerHTML = "";
 
-    // extendida para efecto scroll
-    const listaExtendida = [...colaboradores, ...colaboradores, ...colaboradores];
+    // quitar de la ruleta visual a los que ya ganaron
+    const visibles = colaboradores.filter(
+        c => !ganadores.includes(c.nombre)
+    );
+
+    // repetir para efecto scroll
+    const listaExtendida = [...visibles, ...visibles, ...visibles];
 
     listaExtendida.forEach(p => {
+
         const div = document.createElement("div");
         div.classList.add("participante");
 
-        // marcar si ya ganó
-        if (ganadores.includes(p.nombre)) {
-            div.classList.add("ya-ganador");
-        }
-
         div.textContent = p.nombre;
+
         lista.appendChild(div);
     });
 
     lista.style.transition = "none";
-    lista.style.transform = "translateY(0)";
-}
+    const alturaItem = 225;
 
+    // posición aleatoria al iniciar para dar sensación de giro real desde el principio
+    const inicioRandom = Math.floor(Math.random() * visibles.length);
+
+    lista.style.transform =
+        `translateY(-${inicioRandom * alturaItem}px)`;
+}
 // inicial
 renderLista();
 
@@ -350,28 +358,64 @@ function girar() {
     const ganadorIndex = Math.floor(Math.random() * disponibles.length);
     const ganador = disponibles[ganadorIndex];
 
-    // buscar su posición en la lista COMPLETA
-    const indexEnLista = colaboradores.findIndex(c => c.nombre === ganador.nombre);
+    const visibles = colaboradores.filter(
+        c => !ganadores.includes(c.nombre)
+    );
+
+    const indexEnLista = visibles.findIndex(
+        c => c.nombre === ganador.nombre
+    );
 
     const alturaItem = 225; //coincidir con altura de visor CSS
-    const vueltas = colaboradores.length * 2;
+    const vueltas = visibles.length * 2;
 
     const posicionFinal = (vueltas + indexEnLista) * alturaItem;
 
-    lista.style.transition = "transform 4s cubic-bezier(0.2, 0.8, 0.2, 1)";
+    //Anteriormente se usaba esta curva de animación, pero se cambió a una más "aleatoria" para dar sensación de giro real
+    /*lista.style.transition = "transform 4s cubic-bezier(0.2, 0.8, 0.2, 1)";*/
+
+    // nueva curva para dar sensación de giro real
+    lista.style.transition = "transform 4s cubic-bezier(0.08, 0.9, 0.25, 1)";
     lista.style.transform = `translateY(-${posicionFinal}px)`;
 
     // sonido
-    new Audio("assets/sounds/spin.mp3").play().catch(()=>{});
+    new Audio("assets/sounds/spin.mp3").play().catch(() => { });
 
     setTimeout(() => {
 
-        ganadores.push(ganador.nombre);
-        renderHistorial();
+        const ganadorHTML = document.getElementById("ganador");
 
-        // mostrar ganador oficial
-        document.getElementById("ganador").innerText =
+        // mostrar etiqueta al primer ganador
+        ganadorHTML.style.visibility = "visible";
+        ganadorHTML.style.opacity = "1";
+
+        ganadorHTML.innerText =
             `🎉 Ganador: ${ganador.nombre} 🎉`;
+
+        // animación REAL
+        ganadorHTML.animate(
+            [
+                {
+                    transform: "scale(1)",
+                    color: "#fff",
+                    textShadow: "0 0 5px #afabab"
+                },
+                {
+                    transform: "scale(1.15)",
+                    color: "#fff",
+                    textShadow: "0 0 30px #afabab"
+                },
+                {
+                    transform: "scale(1)",
+                    color: "#fff",
+                    textShadow: "0 0 5px #afabab"
+                }
+            ],
+            {
+                duration: 800,
+                iterations: 2
+            }
+        );
 
         // highlight visual
         const items = document.querySelectorAll(".participante");
@@ -380,16 +424,26 @@ function girar() {
         const ganadorVisualIndex = vueltas + indexEnLista;
 
         if (items[ganadorVisualIndex]) {
+
+            // limpiar anteriores
+            items.forEach(el => el.classList.remove("ganador"));
+
+            // aplicar dorado
             items[ganadorVisualIndex].classList.add("ganador");
         }
 
         // sonido final
-        new Audio("assets/sounds/win.mp3").play().catch(()=>{});
+        new Audio("assets/sounds/win.mp3").play().catch(() => { });
 
-        // refrescar visual (solo para marcar "ya ganó")
+        // esperar unos segundos mostrando gold
         setTimeout(() => {
+
+            ganadores.push(ganador.nombre);
+
             renderLista();
-        }, 2500);
+            renderHistorial();
+
+        }, 1800);
 
     }, 4000);
 }
@@ -403,4 +457,14 @@ function renderHistorial() {
         li.textContent = `${index + 1}. ${nombre}`;
         listaGanadoresHTML.appendChild(li);
     });
+}
+
+//Función para pantalla completa
+function pantallaCompleta() {
+
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
 }

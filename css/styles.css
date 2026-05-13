@@ -16,7 +16,8 @@ body {
 
 .slider-wrapper {
     max-width: 800px;
-    margin: 5px auto;
+    margin: 0 auto;
+    margin-top: 20px;
 }
 
 .main-container {
@@ -46,14 +47,18 @@ body {
     font-family: 'DM Sans', Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: bold;
-    margin: 0 300px -50px 0;
+    /*margin: 0 300px -50px 0;*/
+    margin: 0 auto;
+    width: 450px;
     color: #333;
+    text-align: left;
 }
 
 .ruleta-container .visor {
     margin: 0 auto;
+    margin-top: -15px;
 }
-    
+
 
 .ruleta-container h1 {
     font-size: 25px;
@@ -64,8 +69,7 @@ body {
     width: 450px;
     height: 225px;
     overflow: hidden;
-    /*border: 4px solid #8b5e3c;*/
-    border: 4px solid #0d6efd;
+    border: 5px solid #0d6efd;
     border-radius: 12px;
     background: #fdf6e3;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -120,15 +124,32 @@ button {
     cursor: pointer;
 }
 
-
-#ganador {
-    background: gold !important;
-    /* color: #1e7f34;*/
-    color: #0d6efd;
-    transform: scale(1);
-    /* box-shadow: 0 0 15px gold;*/
+button:hover {
+    background: #d12b08;
 }
 
+/*Estilos anteriores para ganador
+#ganador {
+    background: gold !important;
+    color: #0d6efd;
+    transform: scale(1);
+}
+    */
+
+#ganador {
+    visibility: hidden;
+    /*No muestra la etiqueta hasta que haya un ganador*/
+    opacity: 0;
+    background: #0d6efd;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: inline-block;
+    box-shadow:
+        0 0 15px rgba(13, 110, 253, 0.7),
+        0 0 30px rgba(13, 110, 253, 0.5);
+    transition: opacity 0.3s ease;
+}
 
 .ya-ganador {
     opacity: 0.4;
@@ -136,16 +157,25 @@ button {
 }
 
 .ganador {
-    background: gold !important;
-    /*background: rgb(157, 231, 250) !important;*/
-    color: black;
-    transform: scale(1);
+    background: #0d6efd !important;
+    color: white !important;
+    transform: scale(1.03);
+    transition: all 0.3s ease;
+    box-shadow:
+        0 0 15px rgba(13, 110, 253, 0.8),
+        0 0 25px rgba(13, 110, 253, 0.9);
+}
+
+
+.historial {
+    /*flex: 1;*/
+    width: 50vw;
 }
 
 .historial-container {
-    /*flex: 1;*/
-    width: 50vw;
-    margin: 0 20px;
+    height: 90%;
+    width: 70%;
+    margin: 0 auto;
     background: #ffffff;
     border-radius: 12px;
     border: 4px solid #0d6efd;
@@ -153,7 +183,7 @@ button {
 }
 
 .historial-container h3 {
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
     font-size: 18px;
     background: #0d6efd;
     color: white;
@@ -170,6 +200,10 @@ button {
     padding: 8px;
     border-bottom: 1px solid #eee;
     font-weight: 500;
+}
+
+.btnHistorial{
+    margin-top: 30px;
 }
 
 .creditos {
