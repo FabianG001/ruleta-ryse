@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
@@ -29,13 +32,13 @@
 
     <div class="main-container">
         <div class="ruleta-container">
-            <p>Participantes:</p>
+            <p><i class="fas fa-users"></i>Participantes:</p>
             <div class="visor">
                 <div id="listaColaboradores"></div>
             </div>
 
             <div class="controls">
-                <button onclick="girar()">Girar Ruleta</button>
+                <button onclick="girar()" id="btn-girar"><i class="fas fa-sync" id="icono-ruleta"></i>Girar Ruleta</button>
             </div>
 
             <h1 id="ganador"></h1>
@@ -45,11 +48,14 @@
                 <h3>🏆 Historial de Ganadores</h3>
                 <ul id="listaGanadores"></ul>
             </div>
-            <button class="btnHistorial" onclick="ExportarGanadores()">Descargar Historial</button>
-            <button class="btnHistorial" onclick="pantallaCompleta()">Pantalla Completa</button>
+            <button class="btnHistorial" onclick="ExportarGanadores()">
+                <i class="fas fa-download"></i> Descargar Historial
+            </button>
+            <button class="btnHistorial" onclick="pantallaCompleta()">
+                <i class="fas fa-expand"></i> Pantalla Completa
+            </button>
         </div>
     </div>
-
 
     <footer class="creditos">
         <p>&copy; Fabián González - Soporte TI</p>
@@ -61,7 +67,7 @@
             $('.bxslider').bxSlider({
                 mode: 'fade',
                 auto: true,
-                pause: 3000,
+                pause: 4000,
                 speed: 1000,
                 controls: false
             });

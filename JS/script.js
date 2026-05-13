@@ -446,6 +446,28 @@ function girar() {
         }, 1800);
 
     }, 4000);
+
+// animación de giro del icono
+/*
+    const boton = document.getElementById('btn-girar');
+    const icono = document.getElementById('icono-ruleta');
+
+    boton.addEventListener('click', () => {
+        // 1. Activa la animación del icono
+        icono.classList.add('girando');
+        boton.disabled = true; // Desactiva el botón durante el juego
+
+        // 2. Simula el tiempo que tarda la ruleta en detenerse (ej: 4 segundos)
+        setTimeout(() => {
+            // 3. Detiene la animación
+            icono.classList.remove('girando');
+            boton.disabled = false;
+
+            // Aquí agregas tu lógica para mostrar al ganador
+            alert("¡Tenemos un ganador!");
+        }, 4000);
+    });
+    */
 }
 
 //Función para renderizar el historial de ganadores
