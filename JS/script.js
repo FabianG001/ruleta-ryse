@@ -351,7 +351,7 @@ function girar() {
     const premio = premioInput.value.trim();
 
     if (premio === "") {
-        alert("Debes escribir el premio antes de girar la ruleta.");
+        alert("Escribe el premio antes de girar.");
         premioInput.focus();
         return;
     }
@@ -448,12 +448,15 @@ function girar() {
         // esperar unos segundos mostrando gold
         setTimeout(() => {
 
-            const premio = document.getElementById("premioInput").value.trim();
-
             ganadores.push({
                 nombre: ganador.nombre,
                 premio: premio || "Sin premio definido"
             });
+
+            /*
+            //Limpiar automáticamente el input para la siguiente ronda
+            premioInput.value = "";
+           */
 
             renderLista();
             renderHistorial();
@@ -516,4 +519,34 @@ function pantallaCompleta() {
     } else {
         document.exitFullscreen();
     }
+}
+
+function ExportarGanadores() {
+
+    if (ganadores.length === 0) {
+        alert("No hay ganadores para exportar.");
+        return;
+    }
+
+    // convertir datos
+    const datos = ganadores.map((g, index) => ({
+        "Ronda": index + 1,
+        "Ganador": g.nombre,
+        "Premio": g.premio
+    }));
+
+    // crear hoja
+    const ws = XLSX.utils.json_to_sheet(datos);
+
+    // crear libro
+    const wb = XLSX.utils.book_new();
+
+    // agregar hoja al libro con título
+    XLSX.utils.book_append_sheet(wb, ws, "Ganadores");
+
+    // formatear fecha para nombre de archivo
+    const fecha = new Date().toISOString().split("T")[0];
+
+    // descargar archivo con nombre y fecha
+    XLSX.writeFile(wb, `Historial_Ganadores_${fecha}.xlsx`);
 }
