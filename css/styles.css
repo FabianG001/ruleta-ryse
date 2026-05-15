@@ -94,7 +94,7 @@ body {
     left: 0;
     width: 100%;
     height: 30px;
-    z-index: 2;
+    z-index: 2; /*asegura que las capas de gradiente estén por encima del contenido*/
 }
 
 .visor::before {
@@ -142,19 +142,6 @@ button i {
 button:hover {
     background: #d12b08;
 }
-
-/*
-/* Animación de rotación infinita 
-@keyframes rotar {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* Esta clase se aplicará al icono mediante JavaScript para activar la animación
-.girando {
-    animation: rotar 1s linear infinite;
-}
-*/
 
 #ganador {
     visibility: hidden;
@@ -269,4 +256,25 @@ button:hover {
     padding: 5px 0;
     line-height: 0.6;
     color: #bdbbbb;
+}
+
+/* ANIMACIÓN ICONO RULETA */
+#icono-ruleta {
+    display: inline-block;
+}
+
+/* clase que activa la animación */
+.girando-icono {
+    animation: girarIcono 0.8s linear infinite;
+}
+
+/* keyframes */
+@keyframes girarIcono {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }

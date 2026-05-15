@@ -1,3 +1,4 @@
+// Obtener referencia al elemento HTML donde se mostrarán los ganadores
 const listaGanadoresHTML = document.getElementById("listaGanadores");
 
 // Lista de colaboradores con su fecha de ingreso
@@ -288,6 +289,7 @@ function tieneUnAnio(fechaIngreso) {
     let anios = hoy.getFullYear() - ingreso.getFullYear();
     const m = hoy.getMonth() - ingreso.getMonth();
 
+    // Si el mes actual es menor que el mes de ingreso, o si es el mismo mes pero el día actual es menor, entonces no ha cumplido un año completo
     if (m < 0 || (m === 0 && hoy.getDate() < ingreso.getDate())) {
         anios--;
     }
@@ -310,7 +312,7 @@ function renderLista() {
 
     lista.innerHTML = "";
 
-    // quitar de la ruleta visual a los que ya ganaron
+    // Quitar de la ruleta visual a los que ya ganaron
     const visibles = colaboradores.filter(
         c => !ganadores.some(g => g.nombre === c.nombre)
     );
@@ -345,7 +347,6 @@ renderLista();
 // GIRAR
 // ==========================
 function girar() {
-
     //Validar input de premio vacío
     const premioInput = document.getElementById("premioInput");
     const premio = premioInput.value.trim();
@@ -356,6 +357,10 @@ function girar() {
         return;
     }
 
+    // animar ícono
+    const icono = document.getElementById("icono-ruleta");
+    icono.classList.add("girando-icono");
+    
     // elegibles que no han ganado
     const disponibles = elegibles.filter(p => !ganadores.includes(p.nombre));
 
@@ -392,6 +397,9 @@ function girar() {
     new Audio("assets/sounds/spin.mp3").play().catch(() => { });
 
     setTimeout(() => {
+
+        // detener animación de ícono
+        icono.classList.remove("girando-icono");
 
         const ganadorHTML = document.getElementById("ganador");
 
@@ -462,30 +470,7 @@ function girar() {
             renderHistorial();
 
         }, 1800);
-
     }, 4000);
-
-    // animación de giro del icono
-    /*
-        const boton = document.getElementById('btn-girar');
-        const icono = document.getElementById('icono-ruleta');
-    
-        boton.addEventListener('click', () => {
-            // 1. Activa la animación del icono
-            icono.classList.add('girando');
-            boton.disabled = true; // Desactiva el botón durante el juego
-    
-            // 2. Simula el tiempo que tarda la ruleta en detenerse (ej: 4 segundos)
-            setTimeout(() => {
-                // 3. Detiene la animación
-                icono.classList.remove('girando');
-                boton.disabled = false;
-    
-                // Aquí agregas tu lógica para mostrar al ganador
-                alert("¡Tenemos un ganador!");
-            }, 4000);
-        });
-        */
 }
 
 //Función para renderizar el historial de ganadores y premios
@@ -521,6 +506,7 @@ function pantallaCompleta() {
     }
 }
 
+//Función para exportar ganadores a Excel usando SheetJS (XLSX)
 function ExportarGanadores() {
 
     if (ganadores.length === 0) {
