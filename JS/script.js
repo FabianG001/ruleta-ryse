@@ -394,7 +394,7 @@ function girar() {
     lista.style.transform = `translateY(-${posicionFinal}px)`;
 
     // sonido
-    new Audio("assets/sounds/spin.mp3").play().catch(() => { });
+    new Audio("assets/audio/spin.mp3").play().catch(() => { });
 
     setTimeout(() => {
 
@@ -451,7 +451,7 @@ function girar() {
         }
 
         // sonido final
-        new Audio("assets/sounds/win.mp3").play().catch(() => { });
+        new Audio("assets/audio/win.mp3").play().catch(() => { });
 
         // esperar unos segundos mostrando gold
         setTimeout(() => {
