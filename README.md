@@ -4,7 +4,7 @@ Aplicación web desarrollada para realizar sorteos de colaboradores mediante una
 
 ## 🚀 Funcionalidades
 
-- Validación de antigüedad (8 meses)
+- Validación de antigüedad (12 meses)
 - Eliminación automática de ganadores
 - Animación fluida con sonidos y efectos
 - Modo pantalla completa
