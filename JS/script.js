@@ -351,6 +351,9 @@ function girar() {
     // sonido incial de giro
     /*new Audio("assets/audio/spin.mp3").play().catch(() => { });*/
 
+    // contar ganadores para mostrar número en etiqueta
+    const numganador = ganadores.length;
+
     // ocultar etiqueta de ganador para la siguiente ronda
     document.getElementById("ganador").style.visibility = "hidden";
 
@@ -412,7 +415,7 @@ function girar() {
         ganadorHTML.style.opacity = "1";
 
         ganadorHTML.innerText =
-            `🎉 Ganador: ${ganador.nombre} 🎉`;
+            `🎉 Ganador ${numganador + 1}: ${ganador.nombre} 🎉`;
 
         // animación REAL
         ganadorHTML.animate(
