@@ -347,6 +347,8 @@ renderLista();
 // GIRAR
 // ==========================
 function girar() {
+    document.getElementById("ganador").style.visibility = "hidden";
+    
     //Validar input de premio vacío
     const premioInput = document.getElementById("premioInput");
     const premio = premioInput.value.trim();
