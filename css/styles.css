@@ -53,7 +53,7 @@ body {
 
 .ruleta-container .users-container {
     display: flex;
-    margin-left: 25%;
+    margin-left: 22%;
     gap: 8px;
 }
 
@@ -77,8 +77,16 @@ body {
 }
 
 .visor {
+    /*
     width: 450px;
     height: 225px;
+    */
+    /*
+    width: 40vw;
+    height: 25vh;
+    */
+    width: 50%;
+    height: 25vh;
     overflow: hidden;
     border: 5px solid #0d6efd;
     border-radius: 12px;

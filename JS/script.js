@@ -286,6 +286,7 @@ function tieneUnAnio(fechaIngreso) {
     const hoy = new Date();
     const ingreso = new Date(fechaIngreso);
 
+    // Calcular la diferencia en años considerando meses y días para asegurar que se cumpla un año completo
     let anios = hoy.getFullYear() - ingreso.getFullYear();
     const m = hoy.getMonth() - ingreso.getMonth();
 
@@ -347,6 +348,9 @@ renderLista();
 // GIRAR
 // ==========================
 function girar() {
+    // sonido incial de giro
+    /*new Audio("assets/audio/spin.mp3").play().catch(() => { });*/
+
     // ocultar etiqueta de ganador para la siguiente ronda
     document.getElementById("ganador").style.visibility = "hidden";
 
@@ -395,9 +399,6 @@ function girar() {
     // nueva curva para dar sensación de giro real
     lista.style.transition = "transform 4s cubic-bezier(0.08, 0.9, 0.25, 1)";
     lista.style.transform = `translateY(-${posicionFinal}px)`;
-
-    // sonido
-    new Audio("assets/audio/spin.mp3").play().catch(() => { });
 
     setTimeout(() => {
 
@@ -453,7 +454,7 @@ function girar() {
             items[ganadorVisualIndex].classList.add("ganador");
         }
 
-        // sonido final
+        // sonido final de ganador
         new Audio("assets/audio/win.mp3").play().catch(() => { });
 
         // guardar ganador en el historial después de la animación para evitar que aparezca en la lista durante el giro
