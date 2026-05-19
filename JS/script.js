@@ -347,8 +347,9 @@ renderLista();
 // GIRAR
 // ==========================
 function girar() {
+    // ocultar etiqueta de ganador para la siguiente ronda
     document.getElementById("ganador").style.visibility = "hidden";
-    
+
     //Validar input de premio vacío
     const premioInput = document.getElementById("premioInput");
     const premio = premioInput.value.trim();
@@ -448,14 +449,14 @@ function girar() {
             // limpiar anteriores
             items.forEach(el => el.classList.remove("ganador"));
 
-            // aplicar dorado
+            // agregar clase al ganador
             items[ganadorVisualIndex].classList.add("ganador");
         }
 
         // sonido final
         new Audio("assets/audio/win.mp3").play().catch(() => { });
 
-        // esperar unos segundos mostrando gold
+        // guardar ganador en el historial después de la animación para evitar que aparezca en la lista durante el giro
         setTimeout(() => {
 
             ganadores.push({
