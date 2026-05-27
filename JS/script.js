@@ -332,7 +332,10 @@ function renderLista() {
     });
 
     lista.style.transition = "none";
+    /* altura original antes de cambio a dinámico: 225px (coincidir con altura de visor CSS)
     const alturaItem = 225;
+    */
+    const alturaItem = document.querySelector(".participante").offsetHeight;
 
     // posición aleatoria al iniciar para dar sensación de giro real desde el principio
     const inicioRandom = Math.floor(Math.random() * visibles.length);
@@ -370,7 +373,7 @@ function girar() {
     // animar ícono
     const icono = document.getElementById("icono-ruleta");
     icono.classList.add("girando-icono");
-    
+
     // elegibles que no han ganado
     const disponibles = elegibles.filter(p => !ganadores.includes(p.nombre));
 
@@ -391,7 +394,10 @@ function girar() {
         c => c.nombre === ganador.nombre
     );
 
+    /* // posición final basada en índice lógico (antes de la curva personalizada)
     const alturaItem = 225; //coincidir con altura de visor CSS
+    */
+    const alturaItem = document.querySelector(".participante").offsetHeight;
     const vueltas = visibles.length * 2;
 
     const posicionFinal = (vueltas + indexEnLista) * alturaItem;
