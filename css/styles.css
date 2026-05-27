@@ -19,6 +19,12 @@ body {
     margin-top: 20px;
 }
 
+/* Oculta la paginación, pero se ocultaron desde las propiedades del slider en el index.html 
+.bx-wrapper .bx-pager {
+    display: none;
+}
+*/
+
 .main-container {
     display: flex;
     /* Esto pone los hijos uno al lado del otro */
@@ -77,7 +83,7 @@ body {
 }
 
 .visor {
-    /*
+    /* Tamaño original
     width: 450px;
     height: 225px;
     */
