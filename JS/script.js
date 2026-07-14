@@ -335,9 +335,10 @@ function renderLista() {
     /* altura original antes de cambio a dinámico: 225px (coincidir con altura de visor CSS)
     const alturaItem = 225;
     */
+   // altura dinámica basada en el primer elemento de la lista
     const alturaItem = document.querySelector(".participante").offsetHeight;
 
-    // posición aleatoria al iniciar para dar sensación de giro real desde el principio
+    // posición aleatoria al iniciar para sensación de giro real
     const inicioRandom = Math.floor(Math.random() * visibles.length);
 
     lista.style.transform =
@@ -345,7 +346,6 @@ function renderLista() {
 }
 // inicial
 renderLista();
-
 
 // ==========================
 // GIRAR
