@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-/*@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Montserrat:wght@400;500;600&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     margin: 0;
@@ -9,132 +8,344 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    /*font-family: 'Playfair Display', serif;*/
     background: #dadadb;
     text-align: center;
-    margin: auto;
+    /*margin: 0;*/
 }
 
-.container {
-    justify-items: center;
+.slider-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-.titulo {
-    padding-bottom: 15px;
-    /*color: #0065a7;*/
-}
-
-.ruleta-wrapper {
-    width: 650px;
-    height: 80%;
-
-}
-
-/*
-.historial-wrapper {
-    width: 650px;
-    height: 80%;
-    border-radius: 15px;
-    margin-top: 5%;
-    margin-right: auto;
-    margin-left: 150px;
-    background-color: azure;
-    box-shadow: 0 5px 12px rgba(0, 101, 167, 0.4);
-
-}
-
-.historial-wrapper #historial {
-    list-style: none;
-    padding: 10px 12px;
-    margin: 8px 25px;
-    background: #e8f2fa;
-    border-radius: 8px;
-    font-weight: 500;
-    box-shadow: 0 3px 6px rgba(0, 101, 167, 0.2);
+/* Oculta la paginación, pero se ocultaron desde las propiedades del slider en el index.html 
+.bx-wrapper .bx-pager {
+    display: none;
 }
 */
-.creditos {
-    font-size: 13px;
-    color: #555;
-    opacity: 0.7;
-    position: fixed;
-    bottom: 0;
-    /*left: 0;*/
-    margin-bottom: 50px;
-    width: 100%; /* Para que ocupe todo el ancho */
+
+.main-container {
+    display: flex;
+    /* Esto pone a los hijos uno al lado del otro */
+    width: 100%;
+    height: 50vh;
 }
 
-canvas {
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    width: 90vw;
-    max-width: 500px;
-    height: auto;
+.ruleta-container {
+    display: flex;
+    /* Activa flexbox */
+    flex-direction: column;
+    /* Alinea los elementos verticalmente */
+    justify-content: space-between;
+    /* Distribuye espacio uniforme entre elementos */
+    /*height: 56vh;*/
+    /* Opcional: define una altura (ej. el 100% de la ventana) */
+    width: 50vw;
+    /* Ocupa la mitad del ancho de la pantalla */
+}
+
+.ruleta-container p {
+    font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 2.5%;
+}
+
+.ruleta-container p i {
+    margin-right: 10px;
+}
+
+.ruleta-container .users-container {
+    display: flex;
+    margin-left: 22%;
+    gap: 8px;
+}
+
+.ruleta-container .users-container #premioInput {
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    padding: 12px;
+    width: 40%;
+    border: 2px solid #0d6efd;
+    border-radius: 8px;
+}
+
+.ruleta-container .visor {
+    margin: 0 auto;
+    margin-top: 5px;
+}
+
+.ruleta-container h1 {
+    font-size: 25px;
+    margin: 0 10px;
+}
+
+.visor {
+    /*Tamaño original
+    width: 450px;
+    height: 225px;
+    */
+    width: 90%;
+    max-width: 450px;
+    height: clamp(140px, 28vw, 225px); /* altura dinámica con límites mínimo y máximo */
+    overflow: hidden;
+    border: 5px solid #0d6efd;
+    border-radius: 12px;
+    background: #fdf6e3;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.visor::before,
+.visor::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    z-index: 2;
+    /*asegura que las capas de gradiente estén por encima del contenido*/
+}
+
+.visor::before {
+    top: 0;
+    /*background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);*/
+    background: linear-gradient(to bottom, rgba(13, 110, 253, 0.2), transparent);
+}
+
+.visor::after {
+    bottom: 0;
+    /*background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);*/
+    background: linear-gradient(to top, rgba(13, 110, 253, 0.2), transparent);
+}
+
+#listaColaboradores {
+    display: flex;
+    flex-direction: column;
+    transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.participante {
+    /* Propiedades originales
+    height: 225px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+    background: white;
+    */
+    height: clamp(140px, 28vw, 225px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    font-size: clamp(14px, 2vw, 22px);
+    font-weight: bold;
+    background: white;
+    text-align: center;
+    word-break: break-word;
 }
 
 button {
-    /*
-    margin-top: 20px;
-    padding: 15px 35px;
-    font-size: 18px;
-    cursor: pointer;
-    */
+    font-family: 'DM Sans', Arial, Helvetica, sans-serif;
     padding: 12px 20px;
     margin: 10px;
     border: none;
     border-radius: 8px;
-    background: #0d6efd;
+    background: #F4320B;
     color: white;
     cursor: pointer;
+}
+
+button i {
+    margin-right: 8px;
+}
+
+button:hover {
+    background: #d12b08;
 }
 
 #ganador {
-    margin-top: 50px;
-    font-size: 22px;
-    color: #1e7f34;
-    font-weight: bold;
+    visibility: hidden;
+    /*No muestra la etiqueta hasta que haya un ganador*/
+    opacity: 0;
+    background: #0d6efd;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: inline-block;
+    box-shadow:
+        0 0 15px rgba(13, 110, 253, 0.7),
+        0 0 30px rgba(13, 110, 253, 0.5);
+    transition: opacity 0.3s ease;
 }
 
-.botones-ruleta {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
+.ya-ganador {
+    opacity: 0.4;
+    background: #ddd;
+}
+
+.ganador {
+    background: #0d6efd !important;
+    color: white !important;
+    transform: scale(1.03);
+    transition: all 0.3s ease;
+    box-shadow:
+        0 0 15px rgba(13, 110, 253, 0.8),
+        0 0 25px rgba(13, 110, 253, 0.9);
+}
+
+.historial {
+    /*flex: 1;*/
+    width: 50vw;
+}
+
+.historial-container {
+    height: 90%;
+    width: 70%;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 4px solid #0d6efd;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.historial-container h3 {
+    /*margin-bottom: 10px;*/
+    font-size: 18px;
+    background: #0d6efd;
+    color: white;
+}
+
+#listaGanadores {
+    list-style: none;
+    padding: 0;
+    max-height: 90%;
+    overflow-y: auto;
 }
 
 /*
-.btn-limpiar {
-    width: 50%;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    border: none;
-    background: #ef4444;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
-    box-shadow: 0 5px 12px rgba(239, 68, 68, 0.4);
-}
-
-.btn-limpiar:hover {
-    background: #dc2626;
+#listaGanadores li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-weight: 500;
 }
     */
 
-.btn-ruleta {
-    width: 200px;
-    margin-top: 25px;
-    margin-bottom: 10px;
-    margin-left: 35px;
+#listaGanadores li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    border-radius: 12px;
-    border: none;
-    background: #0065a7;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
-    box-shadow: 0 5px 12px rgba(0, 101, 167, 0.4);
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+
+    font-weight: 500;
+    gap: 15px;
 }
 
-.btn-ruleta:hover {
-    background: #024877;
+.ganador-nombre {
+    text-align: left;
+    flex: 1;
+}
+
+.ganador-premio {
+    color: #000;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.btnHistorial {
+    margin-top: 30px;
+}
+
+.creditos {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    /* Ajusta a tu gusto */
+    font-size: 15px;
+    opacity: 0.7;
+    background-color: #333;
+    /*margin: 5px 0 0 0;*/
+}
+
+.creditos p {
+    font-weight: bold;
+    margin: 3px 0 0 0;
+    padding: 5px 0;
+    line-height: 0.6;
+    color: #bdbbbb;
+}
+
+/* ANIMACIÓN ICONO RULETA */
+#icono-ruleta {
+    display: inline-block;
+}
+
+/* clase que activa la animación */
+.girando-icono {
+    animation: girarIcono 0.8s linear infinite;
+}
+
+/* keyframes */
+@keyframes girarIcono {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* MEDIA QUERIES PARA DISEÑO RESPONSIVE */
+@media (max-width: 768px) {
+
+    .main-container {
+        flex-direction: column;
+        height: auto;
+        gap: 20px; /* espacio entre ruleta e historial */
+        padding-bottom: 80px;
+    }
+
+    .ruleta-container,
+    .historial {
+        width: 100%;
+    }
+
+    .ruleta-container .users-container {
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0;
+        gap: 10px;
+    }
+
+    .ruleta-container .users-container #premioInput {
+        width: 90%;
+    }
+
+    .historial-container {
+        width: 90%;
+        height: auto;
+        min-height: 300px;
+    }
+
+    .creditos {
+        position: relative;
+        height: auto;
+        padding: 10px 0;
+    }
+
+    #ganador {
+        width: 90%;
+        margin: 0 auto;
+        font-size: 18px;
+    }
 }

@@ -1,43 +1,20 @@
-//VARIABLES GLOBALES
-let historialGanadores = JSON.parse(localStorage.getItem("historialGanadores")) || [];
+// Obtener referencia al elemento HTML donde se mostrarán los ganadores
+const listaGanadoresHTML = document.getElementById("listaGanadores");
 
-const logo = new Image();
-logo.src = "assets/img/logo-ryse.png";
-
-let logoCargado = false;
-
-logo.onload = () => {
-    logoCargado = true;
-    dibujarRuleta();
-};
-
-//SONIDO PARA EL GIRO
-const sonidoGiro = new Audio("assets/audio/giro.mp3");
-const sonidoConfeti = new Audio("assets/audio/confeti.mp3");
-
-sonidoGiro.preload = "auto";
-sonidoConfeti.preload = "auto";
-
-sonidoGiro.loop = false;
-sonidoGiro.volume = 0.4;
-sonidoConfeti.volume = 0.4;
-
-// ==================================================
-// LISTA COMPLETA DE COLABORADORES
-// ==================================================
+// Lista de colaboradores con su fecha de ingreso
 const colaboradores = [
     { nombre: "VELAZQUEZ OSUNA LILIA ARMIDA", ingreso: "2025-12-30" },
-    { nombre: "RODRIGUEZ CAMARILLO ELISEO", ingreso: "2005-09-26" },
-    { nombre: "RIVERA RODRIGUEZ J. GUADALUPE", ingreso: "2006-05-20" },
-    { nombre: "RODRIGUEZ GUTIERREZ MONICA", ingreso: "2006-07-16" },
-    { nombre: "HERNANDEZ MORALES FRANCISCO EDUARDO", ingreso: "2009-09-01" },
-    { nombre: "VALTIERRA VILLAFAÑA SILVIA LUZ", ingreso: "2009-09-16" },
-    { nombre: "RAMOS LOPEZ PABLA", ingreso: "2010-01-16" },
-    { nombre: "REYES LOPEZ SANDRA GUADALUPE", ingreso: "2010-01-16" },
+    { nombre: "RODRIGUEZ CAMARILLO ELISEO", ingreso: "2005-09-26" }, // Elegible
+    { nombre: "RIVERA RODRIGUEZ J. GUADALUPE", ingreso: "2026-05-02" },
+    { nombre: "RODRIGUEZ GUTIERREZ MONICA", ingreso: "2006-07-16" }, // Elegible
+    { nombre: "HERNANDEZ MORALES FRANCISCO EDUARDO", ingreso: "2026-04-01" },
+    { nombre: "VALTIERRA VILLAFAÑA SILVIA LUZ", ingreso: "2009-09-16" }, // Elegible
+    { nombre: "RAMOS LOPEZ PABLA", ingreso: "2026-01-16" },
+    { nombre: "REYES LOPEZ SANDRA GUADALUPE", ingreso: "2026-01-16" },
     { nombre: "AYALA MEJIA ELVIRA", ingreso: "2025-12-30" },
     { nombre: "MEDINA SERRANO VICTOR MANUEL", ingreso: "2025-12-30" },
-    { nombre: "CHAVEZ MARTINEZ GERARDO", ingreso: "2010-07-28" },
-    { nombre: "MOSQUEDA VAZQUEZ ALEJANDRA", ingreso: "2010-12-16" },
+    { nombre: "CHAVEZ MARTINEZ GERARDO", ingreso: "2026-07-28" },
+    { nombre: "MOSQUEDA VAZQUEZ ALEJANDRA", ingreso: "2025-12-16" },
     { nombre: "VILLEDA VILLANUEVA LILIANA", ingreso: "2011-04-16" },
     { nombre: "RAZO GARCIA JESUS MIGUEL", ingreso: "2011-06-16" },
     { nombre: "RAMIREZ FLORES GABRIELA", ingreso: "2012-02-01" },
@@ -211,7 +188,7 @@ const colaboradores = [
     { nombre: "MIRELES VAZQUEZ SISSI", ingreso: "2025-12-30" },
     { nombre: "LOPEZ ZAMORA ANGEL JOSUE", ingreso: "2023-06-19" },
     { nombre: "JUAREZ MANCERA BERNARDO", ingreso: "2023-06-26" },
-    { nombre: "MENDEZ MARCELO OSCAR", ingreso: "2025-12-2025" },
+    { nombre: "MENDEZ MARCELO OSCAR", ingreso: "2025-12-25" },
     { nombre: "VAZQUEZ MARES MARIA FERNANDA", ingreso: "2025-12-30" },
     { nombre: "ARAUJO AVIÑA JORGE ANDRES", ingreso: "2025-12-30" },
     { nombre: "VELAZQUEZ TORRES NORMA JUDITH", ingreso: "2023-09-16" },
@@ -302,210 +279,239 @@ const colaboradores = [
     { nombre: "PEREZ MORENO JOSEFINA", ingreso: "2005-06-16" }
 ];
 
-
-// ==================================================
+// ==========================
 // VALIDACIÓN DE ANTIGÜEDAD
-// ==================================================
-function tieneTresMeses(fechaIngreso) {
-    // Forzar fecha LOCAL (evita UTC)
-    const [anio, mes, dia] = fechaIngreso.split("-").map(Number);
-    const ingreso = new Date(anio, mes - 1, dia);
-
+// ==========================
+function tieneUnAnio(fechaIngreso) {
     const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
+    const ingreso = new Date(fechaIngreso);
 
-    // Fecha exacta cuando cumple 3 meses
-    const fechaElegible = new Date(ingreso);
-    fechaElegible.setMonth(fechaElegible.getMonth() + 8);
-    fechaElegible.setHours(0, 0, 0, 0);
+    // Calcular la diferencia en años considerando meses y días para asegurar que se cumpla un año completo
+    let anios = hoy.getFullYear() - ingreso.getFullYear();
+    const m = hoy.getMonth() - ingreso.getMonth();
 
-    return hoy >= fechaElegible;
+    // Si el mes actual es menor que el mes de ingreso, o si es el mismo mes pero el día actual es menor, entonces no ha cumplido un año completo
+    if (m < 0 || (m === 0 && hoy.getDate() < ingreso.getDate())) {
+        anios--;
+    }
+
+    return anios >= 1;
 }
 
+// ==========================
+// ESTADOS
+// ==========================
+const elegibles = colaboradores.filter(c => tieneUnAnio(c.ingreso));
+let ganadores = [];
 
-// ==================================================
-// PARTICIPANTES VISUALES (TODOS)
-// ==================================================
-let participantes = [...colaboradores];
+const lista = document.getElementById("listaColaboradores");
 
-// ==================================================
-// ÍNDICES ELEGIBLES
-// ==================================================
-function obtenerIndicesElegibles() {
-    return participantes
-        .map((p, i) => (tieneTresMeses(p.ingreso) ? i : null))
-        .filter(i => i !== null);
-}
+// ==========================
+// RENDER (TODOS)
+// ==========================
+function renderLista() {
 
-// ==================================================
-// CONFIGURACIÓN CANVAS
-// ==================================================
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const centro = canvas.width / 2;
-const radio = centro - 10;
+    lista.innerHTML = "";
 
-let anguloActual = 0;
-let girando = false;
+    // Quitar de la ruleta visual a los que ya ganaron
+    const visibles = colaboradores.filter(
+        c => !ganadores.some(g => g.nombre === c.nombre)
+    );
 
-//COLORES RUEDA
-const colores = ["#2ecc71", "#f1c40f", "#3498db", "#e74c3c"];
+    // repetir para efecto scroll
+    const listaExtendida = [...visibles, ...visibles, ...visibles];
 
-// ==================================================
-// DIBUJAR RULETA
-// ==================================================
-function dibujarRuleta() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    listaExtendida.forEach(p => {
 
-    // ===== ARO EXTERIOR TIPO CASINO =====
-    ctx.beginPath();
-    ctx.arc(centro, centro, radio + 8, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#2c3e50";
-    ctx.lineWidth = 6;
-    ctx.stroke();
+        const div = document.createElement("div");
+        div.classList.add("participante");
 
-    ctx.beginPath();
-    ctx.arc(centro, centro, radio + 14, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#ecf0f1";
-    ctx.lineWidth = 1;
-    ctx.stroke();
+        div.textContent = p.nombre;
 
-    const paso = (2 * Math.PI) / participantes.length;
-
-    participantes.forEach((persona, i) => {
-        const inicio = anguloActual + i * paso;
-        const fin = inicio + paso;
-
-        ctx.beginPath();
-        ctx.moveTo(centro, centro);
-        ctx.arc(centro, centro, radio, inicio, fin);
-        ctx.fillStyle = colores[i % colores.length];
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.save();
-        ctx.translate(centro, centro);
-        ctx.rotate(inicio + paso / 2);
-        ctx.textAlign = "right";
-        ctx.font = "bold 9px Arial";
-        ctx.fillStyle = "#000";
-        ctx.fillText(persona.nombre, radio - 20, 5);
-        ctx.restore();
+        lista.appendChild(div);
     });
 
-    dibujarCentro();
-    dibujarFlecha();
-
-}
-
-// ESFERA CENTRAL + LOGO RYSE
-/*
-function dibujarCentro() {
-    const radioCentro = 38;
-
-    // Gradiente esfera
-    const gradiente = ctx.createRadialGradient(
-        centro - 10, centro - 10, 5,
-        centro, centro, radioCentro
-    );
-
-    gradiente.addColorStop(0, "#ffffff");
-    gradiente.addColorStop(0.3, "#f1f1f1");
-    gradiente.addColorStop(0.6, "#bfc5c9");
-    gradiente.addColorStop(1, "#7f8c8d");
-
-    ctx.beginPath();
-    ctx.arc(centro, centro, radioCentro, 0, 2 * Math.PI);
-    ctx.fillStyle = gradiente;
-    ctx.fill();
-
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = "#2c3e50";
-    ctx.stroke();
-
-    // Texto RYSE
-    ctx.fillStyle = "#2c3e50";
-    ctx.font = "bold 18px Segoe UI";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("RYSE", centro, centro);
-}
+    lista.style.transition = "none";
+    /* altura original antes de cambio a dinámico: 225px (coincidir con altura de visor CSS)
+    const alturaItem = 225;
     */
-function dibujarCentro() {
-    const radioCentro = 40;
+   // altura dinámica basada en el primer elemento de la lista
+    const alturaItem = document.querySelector(".participante").offsetHeight;
 
-    ctx.save();
+    // posición aleatoria al iniciar para sensación de giro real
+    const inicioRandom = Math.floor(Math.random() * visibles.length);
 
-    // Sombra suave
-    ctx.shadowColor = "rgba(0,0,0,0.35)";
-    ctx.shadowBlur = 10;
+    lista.style.transform =
+        `translateY(-${inicioRandom * alturaItem}px)`;
+}
+// inicial
+renderLista();
 
-    // Esfera
-    const gradiente = ctx.createRadialGradient(
-        centro - 15,
-        centro - 15,
-        10,
-        centro,
-        centro,
-        radioCentro
+// ==========================
+// GIRAR
+// ==========================
+function girar() {
+    // sonido incial de giro
+    /*new Audio("assets/audio/spin.mp3").play().catch(() => { });*/
+
+    // contar ganadores para mostrar número en etiqueta
+    const numganador = ganadores.length;
+
+    // ocultar etiqueta de ganador para la siguiente ronda
+    document.getElementById("ganador").style.visibility = "hidden";
+
+    //Validar input de premio vacío
+    const premioInput = document.getElementById("premioInput");
+    const premio = premioInput.value.trim();
+
+    if (premio === "") {
+        alert("Escribe el premio antes de girar.");
+        premioInput.focus();
+        return;
+    }
+
+    // animar ícono
+    const icono = document.getElementById("icono-ruleta");
+    icono.classList.add("girando-icono");
+
+    // elegibles que no han ganado
+    const disponibles = elegibles.filter(p => !ganadores.includes(p.nombre));
+
+    if (disponibles.length === 0) {
+        alert("Todos los elegibles ya ganaron.");
+        return;
+    }
+
+    // ganador lógico
+    const ganadorIndex = Math.floor(Math.random() * disponibles.length);
+    const ganador = disponibles[ganadorIndex];
+
+    const visibles = colaboradores.filter(
+        c => !ganadores.some(g => g.nombre === c.nombre)
     );
 
-    gradiente.addColorStop(0, "#ffffff");
-    gradiente.addColorStop(1, "#dfe6e9");
+    const indexEnLista = visibles.findIndex(
+        c => c.nombre === ganador.nombre
+    );
 
-    ctx.beginPath();
-    ctx.arc(centro, centro, radioCentro, 0, 2 * Math.PI);
-    ctx.fillStyle = gradiente;
-    ctx.fill();
+    /* // posición final basada en índice lógico (antes de la curva personalizada)
+    const alturaItem = 225; //coincidir con altura de visor CSS
+    */
+    const alturaItem = document.querySelector(".participante").offsetHeight;
+    const vueltas = visibles.length * 2;
 
-    ctx.restore();
+    const posicionFinal = (vueltas + indexEnLista) * alturaItem;
 
-    // LOGO
-    if (logoCargado) {
-        const tamañoLogo = 75;
+    //Anteriormente se usaba esta curva de animación, pero se cambió a una más "aleatoria" para dar sensación de giro real
+    /*lista.style.transition = "transform 4s cubic-bezier(0.2, 0.8, 0.2, 1)";*/
 
-        ctx.drawImage(
-            logo,
-            centro - tamañoLogo / 2,
-            centro - tamañoLogo / 2,
-            tamañoLogo,
-            tamañoLogo
+    // nueva curva para dar sensación de giro real
+    lista.style.transition = "transform 4s cubic-bezier(0.08, 0.9, 0.25, 1)";
+    lista.style.transform = `translateY(-${posicionFinal}px)`;
+
+    setTimeout(() => {
+
+        // detener animación de ícono
+        icono.classList.remove("girando-icono");
+
+        const ganadorHTML = document.getElementById("ganador");
+
+        // mostrar etiqueta al primer ganador
+        ganadorHTML.style.visibility = "visible";
+        ganadorHTML.style.opacity = "1";
+
+        ganadorHTML.innerText =
+            `🎉 Ganador ${numganador + 1}: ${ganador.nombre} 🎉`;
+
+        // animación REAL
+        ganadorHTML.animate(
+            [
+                {
+                    transform: "scale(1)",
+                    color: "#fff",
+                    textShadow: "0 0 5px #afabab"
+                },
+                {
+                    transform: "scale(1.15)",
+                    color: "#fff",
+                    textShadow: "0 0 30px #afabab"
+                },
+                {
+                    transform: "scale(1)",
+                    color: "#fff",
+                    textShadow: "0 0 5px #afabab"
+                }
+            ],
+            {
+                duration: 800,
+                iterations: 2
+            }
         );
-    }
+
+        // highlight visual
+        const items = document.querySelectorAll(".participante");
+        items.forEach(el => el.classList.remove("ganador"));
+
+        const ganadorVisualIndex = vueltas + indexEnLista;
+
+        if (items[ganadorVisualIndex]) {
+
+            // limpiar anteriores
+            items.forEach(el => el.classList.remove("ganador"));
+
+            // agregar clase al ganador
+            items[ganadorVisualIndex].classList.add("ganador");
+        }
+
+        // sonido final de ganador
+        new Audio("assets/audio/win.mp3").play().catch(() => { });
+
+        // guardar ganador en el historial después de la animación para evitar que aparezca en la lista durante el giro
+        setTimeout(() => {
+
+            ganadores.push({
+                nombre: ganador.nombre,
+                premio: premio || "Sin premio definido"
+            });
+
+            /*
+            //Limpiar automáticamente el input para la siguiente ronda
+            premioInput.value = "";
+           */
+
+            renderLista();
+            renderHistorial();
+
+        }, 1800);
+    }, 4000);
 }
 
+//Función para renderizar el historial de ganadores y premios
+function renderHistorial() {
 
-// ==================================================
-// FLECHA CON SOMBRA SUAVE (VISIBLE Y PUNTA HACIA ABAJO)
-// ==================================================
-function dibujarFlecha(offsetY = 0) {
-    const baseY = 5 + offsetY;     // dentro del canvas
-    const puntaY = baseY + 25;      // punta hacia ABAJO
+    listaGanadoresHTML.innerHTML = "";
 
-    ctx.save();
+    ganadores.forEach((g, index) => {
 
-    // Sombra
-    ctx.shadowColor = "rgba(0,0,0,0.35)";
-    ctx.shadowBlur = 6;
-    ctx.shadowOffsetY = 2;
+        const li = document.createElement("li");
 
-    ctx.fillStyle = "#c0392b";
+        li.innerHTML = `
+            <span class="ganador-nombre">
+                ${index + 1}. ${g.nombre}
+            </span>
 
-    ctx.beginPath();
-    ctx.moveTo(centro, puntaY);      // 🔻 punta
-    ctx.lineTo(centro - 14, baseY);  // base izquierda
-    ctx.lineTo(centro + 14, baseY);  // base derecha
-    ctx.closePath();
-    ctx.fill();
+            <span class="ganador-premio">
+                🎁 ${g.premio}
+            </span>
+        `;
 
-    ctx.restore();
+        listaGanadoresHTML.appendChild(li);
+    });
 }
 
-
-
-
-//PANTALLA COMPLETA
+//Función para pantalla completa
 function pantallaCompleta() {
+
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
     } else {
@@ -513,187 +519,33 @@ function pantallaCompleta() {
     }
 }
 
-// ==================================================
-// MOSTRAR HISTORIAL
-// ==================================================
-function renderizarHistorial() {
-    const ul = document.getElementById("historial");
-    ul.innerHTML = "";
+//Función para exportar ganadores a Excel usando SheetJS (XLSX)
+function ExportarGanadores() {
 
-    historialGanadores.forEach((g, i) => {
-        const li = document.createElement("li");
-        li.textContent = `${i + 1}. ${g.nombre}`;
-        ul.appendChild(li);
-    });
-}
-
-
-// ==================================================
-// CONFETI SIMPLE
-// ==================================================
-function lanzarConfeti() {
-    const colores = ["#e74c3c", "#f1c40f", "#2ecc71", "#3498db"];
-
-    for (let i = 0; i < 80; i++) {
-        const div = document.createElement("div");
-        div.style.position = "fixed";
-        div.style.width = "8px";
-        div.style.height = "8px";
-        div.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
-        div.style.left = Math.random() * window.innerWidth + "px";
-        div.style.top = "-10px";
-        div.style.opacity = 0.9;
-        div.style.zIndex = 9999;
-
-        document.body.appendChild(div);
-
-        const duracion = Math.random() * 2000 + 2000;
-        div.animate([
-            { transform: "translateY(0)" },
-            { transform: `translateY(${window.innerHeight + 50}px)` }
-        ], { duration: duracion, easing: "ease-out" });
-
-        setTimeout(() => div.remove(), duracion);
-    }
-}
-
-
-//LIMPIAR HISTORIAL DE GANADORES
-function limpiarHistorial() {
-    //if (!confirm("¿Deseas borrar el historial de ganadores?")) return;
-
-    historialGanadores = [];
-    localStorage.removeItem("historialGanadores");
-    renderizarHistorial();
-}
-//
-
-
-// ==================================================
-// GIRAR RULETA (INTENSIDAD CONSTANTE)
-// ==================================================
-function girar() {
-
-    if (girando) return;
-
-    // LIMPIAR GANADOR ANTERIOR
-    document.getElementById("ganador").innerText = "";
-
-    //INICIAR SONIDO
-    sonidoGiro.currentTime = 0;
-    sonidoGiro.play().catch(() => { });
-
-
-
-    const elegibles = obtenerIndicesElegibles();
-    if (elegibles.length === 0) return;
-
-    girando = true;
-
-    // 🔧 NORMALIZAR ÁNGULO (CLAVE DEL FIX)
-    anguloActual = anguloActual % (2 * Math.PI);
-
-    // Elegir ganador SOLO entre elegibles
-    const indiceGanador =
-        elegibles[Math.floor(Math.random() * elegibles.length)];
-
-    const paso = (2 * Math.PI) / participantes.length;
-
-    // Flecha en -PI/2 (12 en punto)
-    const anguloObjetivo =
-        -Math.PI / 2 - (indiceGanador + 0.5) * paso;
-
-    const vueltas = Math.floor(Math.random() * 8) + 8;
-    const destino = vueltas * 2 * Math.PI + anguloObjetivo;
-
-    const inicioTiempo = performance.now();
-    const duracion = 4000;
-    const anguloInicio = anguloActual;
-
-    function animar(t) {
-        const progreso = Math.min((t - inicioTiempo) / duracion, 1);
-        const easeOut = 1 - Math.pow(1 - progreso, 3);
-
-        anguloActual =
-            anguloInicio + (destino - anguloInicio) * easeOut;
-
-        dibujarRuleta();
-
-        if (progreso < 1) {
-            requestAnimationFrame(animar);
-        } else {
-            anguloActual = anguloActual % (2 * Math.PI);
-
-            // Pequeño "click" visual de la flecha
-            let rebote = 0;
-            const maxRebote = 6;
-            const pasos = 6;
-
-            function animarClick() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                dibujarRuleta();
-
-                dibujarFlecha(Math.sin(rebote) * 4);
-
-                rebote += Math.PI / pasos;
-
-                if (rebote < Math.PI) {
-                    requestAnimationFrame(animarClick);
-                } else {
-                    dibujarRuleta();
-                    sonidoGiro.pause();
-                    sonidoConfeti.currentTime = 0;
-                    sonidoConfeti.play().catch(() => { });
-                    mostrarGanador(indiceGanador);
-                    lanzarConfeti();
-                    girando = false;
-                }
-            }
-
-            animarClick();
-        }
+    if (ganadores.length === 0) {
+        alert("No hay ganadores para exportar.");
+        return;
     }
 
-    requestAnimationFrame(animar);
+    // convertir datos
+    const datos = ganadores.map((g, index) => ({
+        "Ronda": index + 1,
+        "Ganador": g.nombre,
+        "Premio": g.premio
+    }));
+
+    // crear hoja
+    const ws = XLSX.utils.json_to_sheet(datos);
+
+    // crear libro
+    const wb = XLSX.utils.book_new();
+
+    // agregar hoja al libro con título
+    XLSX.utils.book_append_sheet(wb, ws, "Ganadores");
+
+    // formatear fecha para nombre de archivo
+    const fecha = new Date().toISOString().split("T")[0];
+
+    // descargar archivo con nombre y fecha
+    XLSX.writeFile(wb, `Historial_Ganadores_${fecha}.xlsx`);
 }
-
-// ==================================================
-// MOSTRAR GANADOR
-// ==================================================
-function mostrarGanador(indice) {
-    const ganador = participantes[indice];
-
-    document.getElementById("ganador").innerText =
-        `🎉 Ganador: ${ganador.nombre} 🎉`;
-
-    /*
-// Guardar en historial
-historialGanadores.push({
-    nombre: ganador.nombre,
-    fecha: new Date().toLocaleString()
-});
-
-localStorage.setItem(
-    "historialGanadores",
-    JSON.stringify(historialGanadores)
-);
-
-renderizarHistorial();
-*/
-    // Eliminar ganador para que no vuelva a salir
-    participantes.splice(indice, 1);
-
-    lanzarConfeti();
-
-    setTimeout(dibujarRuleta, 900);
-}
-
-
-// ==================================================
-// INICIALIZAR
-// ==================================================
-dibujarRuleta();
-/*
-limpiarHistorial();
-*/
-

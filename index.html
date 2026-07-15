@@ -4,40 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruleta RYSE 2026</title>
+    <title>Ruleta RYSE 2027</title>
     <link rel="icon" type="image/png" href="assets/img/logo-ryse.png">
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Slider -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bxslider@4.2.17/dist/jquery.bxslider.min.js"></script>
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 
 <body>
-    <div class="container">
 
-        <div class="ruleta-wrapper">
-            <h1 class="titulo">🎁 Ruleta RYSE 2026 🎁</h1>
-            <canvas id="canvas" width="500" height="500"></canvas>
+    <header id="slider">
+        <div class="slider-wrapper">
+            <ul class="bxslider">
+                <li><img src="assets/img/slider1.jpg"></li>
+                <li><img src="assets/img/slider2.jpg"></li>
+                <li><img src="assets/img/slider3.jpg"></li>
+                <li><img src="assets/img/slider4.jpg"></li>
+            </ul>
+        </div>
+    </header>
 
+    <div class="main-container">
+        <div class="ruleta-container">
+            <div class="users-container">
+                <p><i class="fas fa-gift"></i>Premio de esta ronda:</p>
+                <input type="text" id="premioInput" placeholder="Escribe el premio de la ronda" maxlength="50">
+            </div>
+            <div class="visor">
+                <div id="listaColaboradores"></div>
+            </div>
 
-            <button class="btn-ruleta" onclick="girar()">Girar Ruleta</button>
-            <button class="btn-ruleta" onclick="pantallaCompleta()">Pantalla Completa</button>
+            <div class="controls">
+                <button onclick="girar()" id="btn-girar"><i class="fa-solid fa-rotate-right" id="icono-ruleta"></i>Girar
+                    Ruleta</button>
+            </div>
+
             <h1 id="ganador"></h1>
         </div>
-        <!--<div class="historial-wrapper">
-            <h1>Historial de ganadores</h1>
-            <ul id="historial"></ul>
-            <button class="btn-limpiar" onclick="limpiarHistorial()">Limpiar historial</button>
-        </div>-->
-
-        <footer class="creditos">
-            <strong><em>Fabián González - Soporte TI</em></strong><br>
-            <strong><em>Ryse 2026</em></strong>
-        </footer>
-        
+        <div class="historial">
+            <div class="historial-container">
+                <h3>🏆 Historial de Ganadores 🏆</h3>
+                <ul id="listaGanadores"></ul>
+            </div>
+            <button class="btnHistorial" onclick="ExportarGanadores()">
+                <i class="fas fa-download"></i> Descargar Historial
+            </button>
+            <button class="btnHistorial" onclick="pantallaCompleta()">
+                <i class="fas fa-expand"></i> Pantalla Completa
+            </button>
+        </div>
     </div>
-    
 
+    <footer class="creditos">
+        <p>&copy; Fabián González - Soporte TI</p>
+        <p>RYSE 2027</p>
+    </footer>
 
+    <script>
+        $(document).ready(function () {
+            $('.bxslider').bxSlider({
+                mode: 'fade',
+                auto: true,
+                pause: 10000,
+                speed: 2000,
+                controls: false,
+                pager: false <!-- Oculta la paginación -->
+            });
+        });
+    </script>
+
+    <!-- Librería para exportar a Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="JS/script.js"></script>
 </body>
 
